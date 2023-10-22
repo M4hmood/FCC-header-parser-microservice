@@ -20,8 +20,15 @@ app.get('/', function (req, res) {
 });
 
 // your first API endpoint...
-app.get('/api/hello', function (req, res) {
-  res.json({ greeting: 'hello API' });
+
+app.get('/api/whoami', ( req, res ) => {
+  let ipaddress = req.ip; // will try to resolve the actual client IP-address by also taking into account headers that are set by proxy servers indicating the origin (client) of the request (althought this will only be done if the 'trust proxy' setting is explicitly enabled).
+
+  //let ipaddress = req.socket.remoteAddress; //will contain the IP-address of the client making the request, which in case of a proxy server will be the proxy's IP-address and not the one from the client on whose behalf the proxy is forwarding the request.
+
+  let language = req.headers["accept-language"];
+  let software = req.headers["user-agent"];
+  res.json({ ipaddress: ipaddress, language: language, software: software });
 });
 
 // listen for requests :)
